@@ -10,4 +10,7 @@ server:
   port: 8080
 mybatis:
   type-aliases-package: com.xia.demo.userservicedemo.pojo
-
+eureka:
+  client:
+    service-url: #注册到eureka服务里面
+      defaultZone: http://127.0.0.1:10086/eureka
