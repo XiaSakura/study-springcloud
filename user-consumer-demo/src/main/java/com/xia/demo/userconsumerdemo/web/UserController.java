@@ -68,6 +68,7 @@ public class UserController {
     /**
      * 利用feign实现远程访问 类似于调用底层方法
      * 注意Feign默认也有对Hystix的集成 但是走的不是之前的那一套 所以需要我们重新配置 我们需要先开启hystrix
+     *
      * @param id
      * @return
      */

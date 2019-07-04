@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class UserFeignClientFallback implements UserFeignClient {
     @Override
     public User queryUserById(Integer id) {
-        User user=new User();
+        User user = new User();
         user.setId(id);
         user.setUsername("用户查询异常");
         return user;

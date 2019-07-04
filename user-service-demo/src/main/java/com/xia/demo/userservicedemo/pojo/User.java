@@ -10,13 +10,14 @@ import javax.persistence.Table;
 @Table(name = "t_user")
 @Data
 public class User {
-    /**t_user
-     *   `id` int(11) NOT NULL AUTO_INCREMENT,
-     *   `loginacct` varchar(255) NOT NULL,
-     *   `userpswd` char(32) NOT NULL,
-     *   `username` varchar(255) NOT NULL,
-     *   `email` varchar(255) NOT NULL,
-     *   `createtime` char(19) DEFAULT NULL,
+    /**
+     * t_user
+     * `id` int(11) NOT NULL AUTO_INCREMENT,
+     * `loginacct` varchar(255) NOT NULL,
+     * `userpswd` char(32) NOT NULL,
+     * `username` varchar(255) NOT NULL,
+     * `email` varchar(255) NOT NULL,
+     * `createtime` char(19) DEFAULT NULL,
      */
     @Id
     @KeySql(useGeneratedKeys = true)
