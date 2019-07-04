@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: api-gateway
+server:
+  port: 10010
+zuul:
+  routes:  #配置路由规则
+    user-service: /user-service/**
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+logging:
+  level:
+    com.xia: debug
