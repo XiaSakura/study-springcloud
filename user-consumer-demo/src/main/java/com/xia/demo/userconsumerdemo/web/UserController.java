@@ -1,5 +1,7 @@
 package com.xia.demo.userconsumerdemo.web;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.xia.demo.userconsumerdemo.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -21,6 +23,7 @@ public class UserController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+
     /**
      * 利用discoveryClient 原生的从eureka服务器里面获取实例
      * @param id
@@ -41,13 +44,19 @@ public class UserController {
      * 利用ribbon 负载均衡实现调用
      * 修改调用方式，不再手动获取ip和端口，而是直接通过服务名称调用
      * 在restTemplate上面有@LoadBalanced注解 注入了ribbon 默认是轮询
+     *  hystrix的属性可以在HystrixCommandProperties这里查看
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public User queryUserById(@PathVariable("id") Integer id){
-        String url="http://user-service/user/"+id;
-        return restTemplate.getForObject(url,User.class);
+    @HystrixCommand(fallbackMethod = "queryUserByIdFallback", commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "6000")})
+    public String queryUserById(@PathVariable("id") Integer id) {
+        String url = "http://user-service/user/" + id;
+        return restTemplate.getForObject(url, User.class).toString();
+    }
+
+    public String queryUserByIdFallback(Integer id) {
+        return "对不起,网络太拥挤了!!";
     }
 
 }
