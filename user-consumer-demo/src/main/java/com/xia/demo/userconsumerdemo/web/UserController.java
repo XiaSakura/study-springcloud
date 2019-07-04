@@ -2,6 +2,7 @@ package com.xia.demo.userconsumerdemo.web;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.xia.demo.userconsumerdemo.client.UserFeignClient;
 import com.xia.demo.userconsumerdemo.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private UserFeignClient userFeignClient;
 
 
     /**
@@ -48,6 +52,7 @@ public class UserController {
      * @param id
      * @return
      */
+/*
     @GetMapping("/{id}")
     @HystrixCommand(fallbackMethod = "queryUserByIdFallback", commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "6000")})
     public String queryUserById(@PathVariable("id") Integer id) {
@@ -58,5 +63,19 @@ public class UserController {
     public String queryUserByIdFallback(Integer id) {
         return "对不起,网络太拥挤了!!";
     }
+*/
+
+    /**
+     * 利用feign实现远程访问 类似于调用底层方法
+     * 注意Feign默认也有对Hystix的集成 但是走的不是之前的那一套 所以需要我们重新配置 我们需要先开启hystrix
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public String queryUserById(@PathVariable("id") Integer id) {
+        User user = userFeignClient.queryUserById(id);
+        return user.toString();
+    }
+
 
 }
